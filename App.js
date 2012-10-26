@@ -24,7 +24,7 @@ Ext.define('CustomApp', {
     launch: function( ) {
         //Write app code here
 		console.log("Hello, you silly dev!");
-		var defectStore = Ext.create('Rally.data.WsapiDataStore', {
+		Ext.create('Rally.data.WsapiDataStore', {
 			model: 'UserStory',
 			autoLoad: true,
 			fetch: this.columnsOfInterest,
@@ -46,9 +46,9 @@ Ext.define('CustomApp', {
 				scope: this, // Note: this is _inside_ listeners
 				load: function( store, records) {
 					var container = this.down( '#storyListPanel' );
-					if( container.items.length == 0 )
+					if( container.items.length === 0 )
 					{
-						var columnDefs = ['Name', 'Owner', 
+						var columnDefs = ['Name', 'Owner', 'Name',
 							{
 								xtype:'actioncolumn',
 								width:30,
