@@ -34,7 +34,13 @@ Ext.define('CustomApp', {
 					operator: '=',
 					value: "In-Progress"
 				}
-			],			
+			],
+			sorters: [
+				{
+					property: 'Owner',
+					direction: 'ASC'			
+				}
+			],
 			listeners: {
 				scope: this, // Note: this is _inside_ listeners
 				load: function( store, records) {
