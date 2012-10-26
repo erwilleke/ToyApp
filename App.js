@@ -41,15 +41,19 @@ Ext.define('CustomApp', {
 					direction: 'ASC'			
 				}
 			],
+			pageSize: 3,
 			listeners: {
 				scope: this, // Note: this is _inside_ listeners
 				load: function( store, records) {
-					console.log( this );
-					this.down( '#furtherRight' ).add({
-						xtype: 'rallygrid',
-						columnCfgs: this.columnsOfInterest,
-						store: store
-					});
+					var container = this.down( '#furtherRight' );
+					if( container.items.length == 0 )
+					{
+						container.add({
+							xtype: 'rallygrid',
+							columnCfgs: this.columnsOfInterest,
+							store: store
+						});
+					}
 				}
 			}
 		});
