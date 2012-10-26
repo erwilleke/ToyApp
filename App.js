@@ -1,20 +1,29 @@
 Ext.define('CustomApp', {
     extend: 'Rally.app.App',
     componentCls: 'app',
+	layout: {
+		type: 'hbox',
+		pack: 'start',
+		align: 'stretch'
+	},
 	items: [
 		{
             xtype: 'panel',
-            title: 'Top of the world',
-            height: 100,
-            width: '75%',
-			html: 'Hello, world topper'
+            title: 'Left of the world',
+			width: 250,
+			html: 'Hello, world left'
         },
         {
             xtype: 'panel',
-            title: 'Bottom of the world',
-            height: 100,
-            width: '75%',
-			html: 'Hello, world bottom'
+			flex: 1,
+            title: 'Right of the world',
+			html: 'Hello, world right 1/4'
+		},
+        {
+            xtype: 'panel',
+			flex: 3,
+            title: 'Righter of the world',
+			html: 'Hello, world righter 3/4'
 		}
 	],
     launch: function() {
