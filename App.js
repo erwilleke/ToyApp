@@ -20,19 +20,22 @@ Ext.define('CustomApp', {
             title: 'Righter of the world'
 		}
 	],
-    launch: function() {
+    launch: function( ) {
         //Write app code here
 		console.log("Hello, you silly dev!");
 		var defectStore = Ext.create('Rally.data.WsapiDataStore', {
 			model: 'UserStory',
 			fetch: ['Name', 'ScheduleState', 'Owner' ],
 			autoLoad: true,
-			scope:this,		// Note: never forget!
 			listeners: {
+				scope: this, // Note: this is _inside_ listeners
 				load: function( store, records) {
-					console.log( store );
-					console.log( records );
-					console.log( records[2].data ); // assuming you can see 3+ stories
+					console.log( this );
+					this.down( '#furtherRight' ).add({
+						xtype: 'rallygrid',
+						columnCfgs: [ 'Name', 'ScheduleState', 'Owner'],
+						store: store
+					});
 				}
 			}
 		});
