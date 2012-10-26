@@ -3,8 +3,18 @@ Ext.define('CustomApp', {
     componentCls: 'app',
 	items: [
 		{
-			html: 'Does this work?'
-		
+            xtype: 'panel',
+            title: 'Top of the world',
+            height: 100,
+            width: '75%',
+			html: 'Hello, world topper'
+        },
+        {
+            xtype: 'panel',
+            title: 'Bottom of the world',
+            height: 100,
+            width: '75%',
+			html: 'Hello, world bottom'
 		}
 	],
     launch: function() {
