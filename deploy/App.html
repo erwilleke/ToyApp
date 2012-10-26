@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Willeke Toy</title>
+
+    <script type="text/javascript" src="/apps/2.0p5/sdk.js"></script>
+
+    <script type="text/javascript">
+        Rally.onReady(function() {
+            Ext.define('CustomApp', {
+                extend: 'Rally.app.App',
+                componentCls: 'app',
+            	items: [
+            		{
+            			html: 'Does this work?'
+            		
+            		}
+            	],
+                launch: function() {
+                    //Write app code here
+            		console.log("Hello, you silly dev!");
+            		console.log( this );
+                }
+            });
+
+            Rally.launchApp('CustomApp', {
+                name: 'Willeke Toy'
+            });
+        });
+    </script>
+
+    <style type="text/css">
+        .app {
+             /* Add app styles here */
+        }
+    </style>
+</head>
+<body></body>
+</html>
