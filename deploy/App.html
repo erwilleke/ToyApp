@@ -18,18 +18,18 @@
             	items: [
                     {
                         xtype: 'panel',
-            			itemId: 'rightSide',
-            			flex: 1,
-                        title: 'Right of the world'
+            			itemId: 'storyListPanel',
+            			flex: 2,
+                        title: 'In scope stories'
             		},
                     {
                         xtype: 'panel',
-            			itemId: 'furtherRight',
+            			itemId: 'storyDetailPanel',
             			flex: 3,
-                        title: 'Righter of the world'
+                        title: 'Selected story details'
             		}
             	],
-            	columnsOfInterest: ['Name', 'ScheduleState', 'Owner' ],
+            	columnsOfInterest: ['Name', 'ScheduleState', 'Owner', 'Description' ],
                 launch: function( ) {
                     //Write app code here
             		console.log("Hello, you silly dev!");
@@ -50,16 +50,37 @@
             					direction: 'ASC'			
             				}
             			],
-            			pageSize: 3,
+            			pageSize: 10,
             			listeners: {
             				scope: this, // Note: this is _inside_ listeners
             				load: function( store, records) {
-            					var container = this.down( '#furtherRight' );
+            					var container = this.down( '#storyListPanel' );
             					if( container.items.length == 0 )
             					{
+            						var columnDefs = ['Name', 'Owner', 
+            							{
+            								xtype:'actioncolumn',
+            								width:30,
+            								items: [{									
+            									icon: 'https://rally1.rallydev.com/apps/images/icon_help.gif',
+            									tooltip: 'More details',
+            									scope:this,
+            									handler: function( grid, rowIndex, colIndex ) 
+            									{
+            										var righterSidePanel = this.down( "#storyDetailPanel" );
+            										var clickedItem = grid.store.data.items[ rowIndex ];
+            										righterSidePanel.update( clickedItem.data.Description );
+            									}
+            								}]
+            							
+            							}
+            						];
+            						console.log( columnDefs );
             						container.add({
             							xtype: 'rallygrid',
-            							columnCfgs: this.columnsOfInterest,
+            							columnCfgs: columnDefs,
+            							disableSelection: true,
+            							enableEditing: false,
             							store: store
             						});
             					}
