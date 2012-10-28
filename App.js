@@ -20,7 +20,56 @@ Ext.define('CustomApp', {
             title: 'Selected story details'
 		}
 	],
-	columnsOfInterest: ['Name', 'ScheduleState', 'Owner', 'Description' ],
+	columnsOfInterest: ['Name', 'ScheduleState', 'Owner' ],
+    detailFields: ['Description', 'Notes', 'Name', 
+            'TaskActualTotal', 'TaskEstimateTotal', 'TaskRemainingTotal', 
+            'Tags', 'CreationDate', 'Blocked', 'BlockedReason',
+            'ScheduleState', 'PlanEstimate', 'Iteration', 'Relesae', 'Owner', 
+            'Tasks', 'RevisionHistory', 'Changesets', 'Discussion',
+            'TestCases', 'TestCaseStatus'],
+      
+    loadStoryDetailswithModel: function( model, dataItem )
+    {
+        console.log( dataItem );
+        model.load( dataItem.data.ObjectID, {
+            scope: this,
+            fetch: this.detailFields,
+            callback: function( result, operation ){
+                if( operation.wasSuccessful() )                
+                {
+                    this.renderStoryDetails( result.data );
+                }
+                else
+                {
+                    var righterSidePanel = this.down( "#storyDetailPanel" );
+                    righterSidePanel.update( "-- Error loading story --" );
+                }                
+            }
+        });
+    },
+    
+    renderStoryDetails: function( storyData )
+    {
+        var righterSidePanel = this.down( "#storyDetailPanel" );
+        righterSidePanel.update( storyData.Description );
+        
+    },            
+    loadStoryDetails: function( dataItem )
+    {
+        if( this.storyModel )
+        {
+            this.loadStoryDetailswithModel( this.storyModel );
+        }
+        else
+        {
+            Rally.data.ModelFactory.getModel({
+                type: 'UserStory',
+                scope: this, // hint: this brings callback into the 'this' context
+                success: function( model ){ this.loadStoryDetailswithModel( model, dataItem );}
+            });
+        }
+    },
+    
     launch: function( ) {
         //Write app code here
 		console.log("Hello, you silly dev!");
@@ -48,7 +97,7 @@ Ext.define('CustomApp', {
 					var container = this.down( '#storyListPanel' );
 					if( container.items.length === 0 )
 					{
-						var columnDefs = ['Name', 'Owner', 'Name',
+						var columnDefs = ['Name', 'Owner',
 							{
 								xtype:'actioncolumn',
 								width:30,
@@ -58,15 +107,15 @@ Ext.define('CustomApp', {
 									scope:this,
 									handler: function( grid, rowIndex, colIndex ) 
 									{
-										var righterSidePanel = this.down( "#storyDetailPanel" );
+                                        this.down( "#storyDetailPanel" ).update("Loading details...");
 										var clickedItem = grid.store.data.items[ rowIndex ];
-										righterSidePanel.update( clickedItem.data.Description );
+                                        this.loadStoryDetails( clickedItem );
 									}
 								}]
 							
 							}
 						];
-						console.log( columnDefs );
+                        
 						container.add({
 							xtype: 'rallygrid',
 							columnCfgs: columnDefs,

@@ -3,7 +3,7 @@ AppTemplate for Rally SDK
 
 ## Overview
 
-This application is Eric's initial journey from "I haven't touch Rally's SDK" 
+This application is Eric's initial journey from "I haven't touched Rally's SDK" 
 to "I have a functioning, somewhat useful application".
 
 ## Usage
@@ -21,7 +21,8 @@ the challenges I encountered and web resources I found useful.
 ## Environment
 The entirety of the explorations took place in one two environments.
 1) Windows 7, Notepad++, Chrome w/ Developer tools, Ruby, GitHub for Windows
-2) [Cloud 9 IDE](https://c9.io/) connected to GitHub, in Chrome, using "Preview" to see progress
+or 2) [Cloud 9 IDE](https://c9.io/) connected to GitHub, in Chrome, using "Preview" to see progress.
+
 In both cases, I had my Rally account open in a different Chrome tab and authenticated to my main account.
 The app development when looking at App-debug.html picks up the project scoping from there.
 
