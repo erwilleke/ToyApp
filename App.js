@@ -28,6 +28,13 @@ Ext.define('CustomApp', {
             'Tasks', 'RevisionHistory', 'Changesets', 'Discussion',
             'TestCases', 'TestCaseStatus'],
       
+    renderStoryDetails: function( storyData )
+    {
+        var righterSidePanel = this.down( "#storyDetailPanel" );
+        righterSidePanel.update( storyData.Description );
+        
+    },
+    
     loadStoryDetailswithModel: function( model, dataItem )
     {
         console.log( dataItem );
@@ -48,12 +55,6 @@ Ext.define('CustomApp', {
         });
     },
     
-    renderStoryDetails: function( storyData )
-    {
-        var righterSidePanel = this.down( "#storyDetailPanel" );
-        righterSidePanel.update( storyData.Description );
-        
-    },            
     loadStoryDetails: function( dataItem )
     {
         if( this.storyModel )
@@ -70,9 +71,41 @@ Ext.define('CustomApp', {
         }
     },
     
+    renderStoryListGrid: function( store, records )
+    {
+		var container = this.down( '#storyListPanel' );
+		if( container.items.length === 0 )
+		{
+			var columnDefs = ['Name', 'Owner',
+				{
+					xtype:'actioncolumn',
+					width:30,
+					items: [{									
+						icon: 'https://rally1.rallydev.com/apps/images/icon_help.gif',
+						tooltip: 'More details',
+						scope:this,
+						handler: function( grid, rowIndex, colIndex ) 
+						{
+                            this.down( "#storyDetailPanel" ).update("Loading details...");
+							var clickedItem = grid.store.data.items[ rowIndex ];
+                            this.loadStoryDetails( clickedItem );
+						}
+					}]
+				}
+			];
+            
+			container.add({
+				xtype: 'rallygrid',
+				columnCfgs: columnDefs,
+				disableSelection: true,
+				enableEditing: false,
+				store: store
+			});
+		}
+    },
+    
     launch: function( ) {
-        //Write app code here
-		console.log("Hello, you silly dev!");
+        // Load list of in-progress stories
 		Ext.create('Rally.data.WsapiDataStore', {
 			model: 'UserStory',
 			autoLoad: true,
@@ -93,38 +126,7 @@ Ext.define('CustomApp', {
 			pageSize: 10,
 			listeners: {
 				scope: this, // Note: this is _inside_ listeners
-				load: function( store, records) {
-					var container = this.down( '#storyListPanel' );
-					if( container.items.length === 0 )
-					{
-						var columnDefs = ['Name', 'Owner',
-							{
-								xtype:'actioncolumn',
-								width:30,
-								items: [{									
-									icon: 'https://rally1.rallydev.com/apps/images/icon_help.gif',
-									tooltip: 'More details',
-									scope:this,
-									handler: function( grid, rowIndex, colIndex ) 
-									{
-                                        this.down( "#storyDetailPanel" ).update("Loading details...");
-										var clickedItem = grid.store.data.items[ rowIndex ];
-                                        this.loadStoryDetails( clickedItem );
-									}
-								}]
-							
-							}
-						];
-                        
-						container.add({
-							xtype: 'rallygrid',
-							columnCfgs: columnDefs,
-							disableSelection: true,
-							enableEditing: false,
-							store: store
-						});
-					}
-				}
+				load: this.renderStoryListGrid
 			}
 		});
     }
